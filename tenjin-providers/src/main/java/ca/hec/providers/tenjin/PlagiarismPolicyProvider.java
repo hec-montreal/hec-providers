@@ -1,6 +1,6 @@
 package ca.hec.providers.tenjin;
 
-/*import java.io.IOException;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.PropertyResourceBundle;
@@ -20,16 +20,16 @@ import ca.hec.tenjin.api.model.syllabus.AbstractSyllabusElement;
 import ca.hec.tenjin.api.model.syllabus.SyllabusTextElement;
 import ca.hec.tenjin.api.model.template.Template;
 import ca.hec.tenjin.api.provider.ExternalDataProvider;
-import lombok.Setter;*/
+import lombok.Setter;
 
 /**
  *
  * @author <a href="mailto:mame-awa.diop@hec.ca">Mame Awa Diop</a>
  * @version $Id: $
  */
-public class PlagiarismPolicyProvider /*implements ExternalDataProvider*/ {
+public class PlagiarismPolicyProvider implements ExternalDataProvider {
 
-    /*private static final String CONFIGURATION_FILE = "/group/tenjin/plagiarismProvider/plagiarismPolicy.properties";
+    private static final String CONFIGURATION_FILE = "/group/tenjin/plagiarismProvider/plagiarismPolicy.properties";
     
     private static String CACHE_NAME = "ca.hec.commons.providers.PlagiarismPolicyProvider";
     private Cache<String, ResourceBundle> cache;
@@ -95,7 +95,7 @@ public class PlagiarismPolicyProvider /*implements ExternalDataProvider*/ {
     		}
     	}
 		return rb;
-	}*/
+	}
 
 }
 

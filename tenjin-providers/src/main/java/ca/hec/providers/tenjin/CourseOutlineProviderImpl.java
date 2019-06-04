@@ -1,6 +1,6 @@
 package ca.hec.providers.tenjin;
 
-/*import java.util.ArrayList;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.Map;
 import java.util.HashMap;
@@ -62,10 +62,10 @@ import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.exception.IdUsedException;
 import org.sakaiproject.exception.InUseException;
 import org.sakaiproject.exception.InconsistentException;
-import org.sakaiproject.exception.OverQuotaException;*/
+import org.sakaiproject.exception.OverQuotaException;
 
-public class CourseOutlineProviderImpl /*implements CourseOutlineProvider*/ {
-	/*private static Logger log = LoggerFactory.getLogger(CourseOutlineProviderImpl.class);
+public class CourseOutlineProviderImpl implements CourseOutlineProvider {
+	private static Logger log = LoggerFactory.getLogger(CourseOutlineProviderImpl.class);
 	
 	@Setter
 	ContentHostingService contentService;
@@ -977,5 +977,5 @@ public class CourseOutlineProviderImpl /*implements CourseOutlineProvider*/ {
 		citationService.save(destinationCitationList);
 		
 		return newSiteCollectionId + citationListName + "/" + newCitation.getId();
-	}*/
+	}
 }

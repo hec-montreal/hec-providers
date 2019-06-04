@@ -1,18 +1,18 @@
 package ca.hec.providers.tenjin;
 
-/*import ca.hec.portal.api.OfficialCourseDescriptionDao;
-import ca.hec.portal.model.OfficialCourseDescription;
+import ca.hec.archive.dao.OfficialCourseDescriptionDao;
+import ca.hec.archive.model.OfficialCourseDescription;
 import ca.hec.tenjin.api.model.syllabus.AbstractSyllabusElement;
 import ca.hec.tenjin.api.model.syllabus.SyllabusRubricElement;
 import ca.hec.tenjin.api.model.syllabus.SyllabusTextElement;
 import ca.hec.tenjin.api.provider.ExternalDataProvider;
 import lombok.Setter;
 
-import java.util.ArrayList;*/
+import java.util.ArrayList;
 
-public class OfficialCourseDescriptionProvider /*implements ExternalDataProvider*/ {
+public class OfficialCourseDescriptionProvider implements ExternalDataProvider {
 
-    /*@Setter
+    @Setter
     OfficialCourseDescriptionDao officialCourseDescriptionDao;
 
     @Override
@@ -63,6 +63,6 @@ public class OfficialCourseDescriptionProvider /*implements ExternalDataProvider
         }
 
         return officialDescription;
-    }*/
+    }
 }
 
