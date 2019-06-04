@@ -29,10 +29,10 @@ import lombok.Setter;
  */
 public class PlagiarismPolicyProvider implements ExternalDataProvider {
 
-    private static final String CONFIGURATION_FILE = "/group/tenjin/plagiarismProvider/plagiarismPolicy.properties";
-    
-    private static String CACHE_NAME = "ca.hec.commons.providers.PlagiarismPolicyProvider";
-    private Cache<String, ResourceBundle> cache;
+	private static final String CONFIGURATION_FILE = "/group/tenjin/plagiarismProvider/plagiarismPolicy.properties";
+
+	private static String CACHE_NAME = "ca.hec.commons.providers.PlagiarismPolicyProvider";
+	private Cache<String, ResourceBundle> cache;
 
 	@Setter
 	private MemoryService memoryService;
@@ -41,11 +41,11 @@ public class PlagiarismPolicyProvider implements ExternalDataProvider {
 		cache = memoryService.newCache(CACHE_NAME);
 	}
 
-    @Override
-    public AbstractSyllabusElement getAbstractSyllabusElement(String siteId, String locale) {
+	@Override
+	public AbstractSyllabusElement getAbstractSyllabusElement(String siteId, String locale) {
 		String bundlePath = CONFIGURATION_FILE;
 		if (locale != null) {
-			bundlePath = bundlePath.replace(".properties", "_"+locale+".properties");
+			bundlePath = bundlePath.replace(".properties", "_" + locale + ".properties");
 		}
 		ResourceBundle bundle = getBundle(bundlePath);
 
@@ -68,34 +68,33 @@ public class PlagiarismPolicyProvider implements ExternalDataProvider {
 			rubric.setElements(children);
 		}
 		return rubric;
-    }
+	}
 
-    private ResourceBundle getBundle(String path) {
-    	ResourceBundle rb = null;
-    	
-    	if (cache != null && cache.containsKey(path)) {
+	private ResourceBundle getBundle(String path) {
+		ResourceBundle rb = null;
+
+		if (cache != null && cache.containsKey(path)) {
 			rb = cache.get(path);
 		}
-    	
-    	if (rb == null) {
-    		try {
-    			ContentResource resource = ContentHostingService.getResource(path);
-    			rb = new PropertyResourceBundle(resource.streamContent());
-    			cache.put(path, rb);
-    		} catch (PermissionException e) {
-    			e.printStackTrace();
-    		} catch (IdUnusedException e) {
-    			e.printStackTrace();
-    		} catch (TypeException e) {
-    			e.printStackTrace();
-    		} catch (ServerOverloadException e) {
-    			e.printStackTrace();
-    		} catch (IOException e) {
-    			e.printStackTrace();
-    		}
-    	}
+
+		if (rb == null) {
+			try {
+				ContentResource resource = ContentHostingService.getResource(path);
+				rb = new PropertyResourceBundle(resource.streamContent());
+				cache.put(path, rb);
+			} catch (PermissionException e) {
+				e.printStackTrace();
+			} catch (IdUnusedException e) {
+				e.printStackTrace();
+			} catch (TypeException e) {
+				e.printStackTrace();
+			} catch (ServerOverloadException e) {
+				e.printStackTrace();
+			} catch (IOException e) {
+				e.printStackTrace();
+			}
+		}
 		return rb;
 	}
 
 }
-
