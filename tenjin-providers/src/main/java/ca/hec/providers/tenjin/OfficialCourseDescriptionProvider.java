@@ -28,7 +28,7 @@ public class OfficialCourseDescriptionProvider implements ExternalDataProvider {
         }
 
         if (description == null) {
-            return null;
+            return descriptionRubric;
         }
 
         SyllabusTextElement descriptionText = new SyllabusTextElement();
