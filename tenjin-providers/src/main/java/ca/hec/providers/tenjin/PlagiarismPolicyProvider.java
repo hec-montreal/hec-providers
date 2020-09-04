@@ -1,5 +1,8 @@
 package ca.hec.providers.tenjin;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +31,7 @@ import lombok.Setter;
  * @version $Id: $
  */
 public class PlagiarismPolicyProvider implements ExternalDataProvider {
+	private static Logger log = LoggerFactory.getLogger(CourseOutlineProviderImpl.class);
 
 	private static final String CONFIGURATION_FILE = "/group/tenjin/plagiarismProvider/plagiarismPolicy.properties";
 
@@ -49,7 +53,9 @@ public class PlagiarismPolicyProvider implements ExternalDataProvider {
 		}
 		ResourceBundle bundle = getBundle(bundlePath);
 
-		SyllabusRubricElement rubric = null;
+		SyllabusRubricElement rubric = new SyllabusRubricElement();
+		List<AbstractSyllabusElement> children = new ArrayList<AbstractSyllabusElement>();
+		rubric.setElements(children);
 		if (bundle != null) {
 			SyllabusTextElement textElement = new SyllabusTextElement();
 
@@ -61,11 +67,12 @@ public class PlagiarismPolicyProvider implements ExternalDataProvider {
 			textElement.setHidden(false);
 			textElement.setImportant(false);
 
-			rubric = new SyllabusRubricElement();
 			rubric.setTitle(bundle.getString("plagiarismRubricTitle"));
-			List<AbstractSyllabusElement> children = new ArrayList<AbstractSyllabusElement>();
 			children.add(textElement);
-			rubric.setElements(children);
+		}
+		else {
+			log.error("bundle is null for some reason");
+			rubric.setTitle("IMPORTANT");
 		}
 		return rubric;
 	}
