@@ -19,7 +19,9 @@ public class OfficialCourseDescriptionProvider implements ExternalDataProvider {
     public AbstractSyllabusElement getAbstractSyllabusElement(String siteId, String locale) {
 
         SyllabusRubricElement descriptionRubric = new SyllabusRubricElement();
-        descriptionRubric.setTitle("Description");
+
+        String title = locale.equals("es_ES") ? "Descripción" : "Description";
+        descriptionRubric.setTitle(title);
 
         String description = null;
         if (siteId.contains(".")) {
