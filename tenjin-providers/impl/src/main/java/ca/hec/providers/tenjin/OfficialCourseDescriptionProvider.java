@@ -1,19 +1,26 @@
 package ca.hec.providers.tenjin;
 
-import ca.hec.archive.dao.OfficialCourseDescriptionDao;
-import ca.hec.archive.model.OfficialCourseDescription;
+import ca.hec.providers.dao.OfficialCourseDescriptionDao;
+import ca.hec.providers.model.CourseOutlineDescription;
 import ca.hec.tenjin.api.model.syllabus.AbstractSyllabusElement;
 import ca.hec.tenjin.api.model.syllabus.SyllabusRubricElement;
 import ca.hec.tenjin.api.model.syllabus.SyllabusTextElement;
 import ca.hec.tenjin.api.provider.ExternalDataProvider;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import lombok.Setter;
 
 import java.util.ArrayList;
 
 public class OfficialCourseDescriptionProvider implements ExternalDataProvider {
+	private static Logger log = LoggerFactory.getLogger(OfficialCourseDescriptionProvider.class);
 
     @Setter
     OfficialCourseDescriptionDao officialCourseDescriptionDao;
+
+    public void init() {
+        log.info("init");
+    }
 
     @Override
     public AbstractSyllabusElement getAbstractSyllabusElement(String siteId, String locale) {
@@ -26,7 +33,7 @@ public class OfficialCourseDescriptionProvider implements ExternalDataProvider {
         String description = null;
         if (siteId.contains(".")) {
             String catalogNbr = siteId.substring(0, siteId.indexOf('.')).replace("-", "");
-            description = getOfficialDescriptionString(catalogNbr, locale);
+            description = getOfficialDescriptionString(catalogNbr, "2213", locale);
         }
 
         if (description == null) {
@@ -48,9 +55,9 @@ public class OfficialCourseDescriptionProvider implements ExternalDataProvider {
         return descriptionRubric;
     }
 
-    private String getOfficialDescriptionString(String catalogNbr, String locale) {
+    private String getOfficialDescriptionString(String catalogNbr, String sessionCode, String locale) {
         String officialDescription = "";
-        OfficialCourseDescription co = officialCourseDescriptionDao.getOfficialCourseDescription(catalogNbr);
+        CourseOutlineDescription co = officialCourseDescriptionDao.getOfficialCourseDescription(catalogNbr, sessionCode);
         if (co == null)
             return null;
 

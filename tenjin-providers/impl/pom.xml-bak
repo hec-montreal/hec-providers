@@ -1,0 +1,119 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>hec-course-archive</artifactId>
+		<groupId>ca.hec</groupId>
+		<version>19.4</version>
+	</parent>
+	<groupId>ca.hec</groupId>
+	<artifactId>hec-course-archive-impl</artifactId>
+	<name>hec-course-archive-impl</name>
+	<packaging>jar</packaging>
+	<repositories>
+		<repository>
+			<id>local_libs</id>
+			<url>file://${project.basedir}/lib</url>
+		</repository>
+	</repositories>
+
+	<dependencies>
+
+		<dependency>
+			<groupId>ca.hec</groupId>
+			<artifactId>hec-course-archive-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>ca.hec</groupId>
+			<artifactId>hec-utils</artifactId>
+			<version>19.4</version>
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.projectlombok</groupId>
+			<artifactId>lombok</artifactId>
+			<version>${sakai.lombok.version}</version>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${sakai.spring.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>${sakai.hibernate.groupId}</groupId>
+			<artifactId>${sakai.hibernate.artifactId}</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<!-- Sakai dependencies -->
+		<dependency>
+			<groupId>org.sakaiproject.kernel</groupId>
+			<artifactId>sakai-kernel-api</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.sakaiproject.kernel</groupId>
+			<artifactId>sakai-component-manager</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.sakaiproject.kernel</groupId>
+			<artifactId>sakai-kernel-util</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.sakaiproject.edu-services.course-management</groupId>
+			<artifactId>coursemanagement-api</artifactId>
+		</dependency>
+
+		<!-- Apache Commons dependencies -->
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>commons-lang</groupId>
+			<artifactId>commons-lang</artifactId>
+		</dependency>
+		<!-- quartz -->
+		<dependency>
+			<groupId>org.opensymphony.quartz</groupId>
+			<artifactId>quartz</artifactId>
+			<version>1.6.6</version>
+			<scope>provided</scope>
+		</dependency>
+		<!-- pd4ml (java API to convert HTML to PDF) -->
+		<dependency>
+			<groupId>org</groupId>
+			<artifactId>pd4ml-core</artifactId>
+			<version>380</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org</groupId>
+			<artifactId>pd4ml-css2</artifactId>
+			<version>380</version>
+			<type>jar</type>
+		</dependency>
+		<dependency>
+			<groupId>org</groupId>
+			<artifactId>pd4ml-taglib</artifactId>
+			<version>380</version>
+			<type>jar</type>
+		</dependency>
+	</dependencies>
+	<build>
+		<!-- configure the build to use the standard maven structure -->
+		<sourceDirectory>src/main/java</sourceDirectory>
+		<resources>
+			<resource>
+				<directory>src/main/ressources</directory>
+			</resource>
+		</resources>
+	</build>
+</project>

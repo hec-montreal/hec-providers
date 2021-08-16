@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+      "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+          "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd">
+
+<hibernate-mapping>
+	<class name="ca.hec.providers.model.CourseOutlineDescription" table="PSFTCONT.ZONECOURS2_PS_N_BR_ZONCOUR_MW">
+		<id name="catalogNbr" type="string" length="30" column="CATALOG_NBR" />
+		<property name="courseId" type="string" formula="concat(subject, catalog_nbr)"/>
+		<property name="subject" type="string" column="SUBJECT" length="24" not-null="true"/>
+		<property name="description" type="string" column="N_LONG_DESCR" length="4000" not-null="false"/>
+		<property name="shortDescription" type="string" column="N_SHORT_DESCR" length="4000" not-null="false"/>
+		<property name="themes" type="string" column="N_THEMES" length="4000" not-null="false"/>
+		<property name="sessionCode" type="string" column="STRM" length="4" not-null="true"/>
+     </class>
+</hibernate-mapping>
