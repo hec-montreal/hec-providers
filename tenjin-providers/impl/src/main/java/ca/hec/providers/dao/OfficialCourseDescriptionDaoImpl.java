@@ -1,11 +1,9 @@
-package ca.hec.providers.dao.impl;
+package ca.hec.providers.dao;
 
-import ca.hec.providers.dao.OfficialCourseDescriptionDao;
 import ca.hec.providers.model.CourseOutlineDescription;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.hibernate.criterion.*;
-import org.hibernate.type.Type;
 import org.springframework.orm.hibernate4.support.HibernateDaoSupport;
 
 import java.util.*;
