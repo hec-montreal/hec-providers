@@ -19,7 +19,7 @@
 		  class="org.springframework.transaction.interceptor.TransactionProxyFactoryBean">
 		<property name="transactionManager" ref="org.sakaiproject.springframework.orm.hibernate.GlobalTransactionManager" />
 		<property name="target">
-			<bean class="ca.hec.providers.dao.impl.OfficialCourseDescriptionDaoImpl">
+			<bean class="ca.hec.providers.dao.OfficialCourseDescriptionDaoImpl">
 				<property name="sessionFactory">
 					<ref bean="org.sakaiproject.springframework.orm.hibernate.GlobalSessionFactory" />
 				</property>
