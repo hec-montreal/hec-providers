@@ -44,10 +44,6 @@ public class OfficialCourseDescriptionProvider implements ExternalDataProvider {
             description = getOfficialDescriptionString(catalogNbr, sessionCode, locale);
         }
 
-        if (description == null) {
-            return descriptionRubric;
-        }
-
         SyllabusTextElement descriptionText = new SyllabusTextElement();
         descriptionText.setDescription(description);
         descriptionText.setTemplateStructureId(-1L);
