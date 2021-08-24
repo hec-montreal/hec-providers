@@ -1,19 +1,27 @@
 package ca.hec.providers.tenjin;
 
-import ca.hec.archive.dao.OfficialCourseDescriptionDao;
-import ca.hec.archive.model.OfficialCourseDescription;
+import ca.hec.providers.dao.OfficialCourseDescriptionDao;
+import ca.hec.providers.model.CourseOutlineDescription;
 import ca.hec.tenjin.api.model.syllabus.AbstractSyllabusElement;
 import ca.hec.tenjin.api.model.syllabus.SyllabusRubricElement;
 import ca.hec.tenjin.api.model.syllabus.SyllabusTextElement;
 import ca.hec.tenjin.api.provider.ExternalDataProvider;
+import ca.hec.commons.utils.FormatUtils;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import lombok.Setter;
 
 import java.util.ArrayList;
 
 public class OfficialCourseDescriptionProvider implements ExternalDataProvider {
+	private static Logger log = LoggerFactory.getLogger(OfficialCourseDescriptionProvider.class);
 
     @Setter
     OfficialCourseDescriptionDao officialCourseDescriptionDao;
+
+    public void init() {
+        log.info("init");
+    }
 
     @Override
     public AbstractSyllabusElement getAbstractSyllabusElement(String siteId, String locale) {
@@ -26,11 +34,14 @@ public class OfficialCourseDescriptionProvider implements ExternalDataProvider {
         String description = null;
         if (siteId.contains(".")) {
             String catalogNbr = siteId.substring(0, siteId.indexOf('.')).replace("-", "");
-            description = getOfficialDescriptionString(catalogNbr, locale);
-        }
-
-        if (description == null) {
-            return descriptionRubric;
+            String sessionCode;
+            if (siteId.contains("-")) {
+                sessionCode = FormatUtils.getSessionId(siteId.substring(siteId.indexOf('.')+1, siteId.indexOf('-')));
+            }
+            else {
+                sessionCode = FormatUtils.getSessionId(siteId.substring(siteId.indexOf('.')+1));
+            }
+            description = getOfficialDescriptionString(catalogNbr, sessionCode, locale);
         }
 
         SyllabusTextElement descriptionText = new SyllabusTextElement();
@@ -48,11 +59,14 @@ public class OfficialCourseDescriptionProvider implements ExternalDataProvider {
         return descriptionRubric;
     }
 
-    private String getOfficialDescriptionString(String catalogNbr, String locale) {
+    private String getOfficialDescriptionString(String catalogNbr, String sessionCode, String locale) {
+        log.debug("Retrieve course description for " + catalogNbr + " " + sessionCode + " " + locale);
         String officialDescription = "";
-        OfficialCourseDescription co = officialCourseDescriptionDao.getOfficialCourseDescription(catalogNbr);
-        if (co == null)
+        CourseOutlineDescription co = officialCourseDescriptionDao.getOfficialCourseDescription(catalogNbr, sessionCode);
+        if (co == null) {
+            log.error("Description null for " + catalogNbr + " " + sessionCode);
             return null;
+        }
 
         if (co.getShortDescription() != null)
             officialDescription += "<p>" + co.getShortDescription().replace("\n", "</br>") + "</p>";
@@ -63,6 +77,7 @@ public class OfficialCourseDescriptionProvider implements ExternalDataProvider {
             officialDescription += "<h3>" + themesTitle + "</h3><p>" + co.getThemes().replace("\n", "</br>") + "</p>";
         }
 
+        log.debug("Description found");
         return officialDescription;
     }
 }

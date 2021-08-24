@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>	
+	<artifactId>tenjin-providers-impl</artifactId>
+	<version>19.4</version>
+	<name>tenjin-providers-impl</name>
+	<packaging>jar</packaging>
+	
+	<parent>
+		<groupId>ca.hec</groupId>
+		<artifactId>tenjin-providers</artifactId>
+		<relativePath>../pom.xml</relativePath>
+		<version>19.4</version>
+	</parent>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
+
+	<build>
+		<sourceDirectory>src/main/java</sourceDirectory>
+	</build>
+
+	<dependencies>
+		<!-- spring -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-orm</artifactId>
+			<version>${sakai.spring.version}</version>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>${sakai.hibernate.groupId}</groupId>
+			<artifactId>${sakai.hibernate.artifactId}</artifactId>
+			<scope>provided</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>ca.hec</groupId>
+			<artifactId>tenjin-api</artifactId>
+			<version>19.4</version>
+		</dependency>
+		<dependency>
+			<groupId>ca.hec</groupId>
+			<artifactId>tenjin-providers-api</artifactId>
+			<version>19.4</version>
+		</dependency>
+		<dependency>
+			<groupId>ca.hec</groupId>
+			<artifactId>hec-utils</artifactId>
+			<version>19.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.sakaiquebec.opensyllabus</groupId>
+			<artifactId>osyl-common-api</artifactId>
+			<version>19.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.sakaiquebec.opensyllabus</groupId>
+			<artifactId>osyl-common-shared</artifactId>
+			<version>19.4</version>
+		</dependency>
+		<dependency>
+			<groupId>org.sakaiproject.kernel</groupId>
+			<artifactId>sakai-kernel-api</artifactId>
+			<version>${sakai.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>org.sakaiproject</groupId>
+			<artifactId>sakai-citations-api</artifactId>
+			<version>${sakai.version}</version>
+		</dependency>
+        <dependency>
+            <groupId>commons-logging</groupId>
+            <artifactId>commons-logging</artifactId>
+        </dependency>
+	</dependencies>
+</project>
