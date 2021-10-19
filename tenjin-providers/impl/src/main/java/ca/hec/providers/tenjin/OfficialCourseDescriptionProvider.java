@@ -35,11 +35,11 @@ public class OfficialCourseDescriptionProvider implements ExternalDataProvider {
         if (siteId.contains(".")) {
             String catalogNbr = siteId.substring(0, siteId.indexOf('.')).replace("-", "");
             String sessionCode;
-            if (siteId.contains("-")) {
-                sessionCode = FormatUtils.getSessionId(siteId.substring(siteId.indexOf('.')+1, siteId.indexOf('-')));
+            if (siteId.lastIndexOf('-') > siteId.lastIndexOf(".")) {
+                sessionCode = FormatUtils.getSessionId(siteId.substring(siteId.lastIndexOf('.')+1, siteId.lastIndexOf('-')));
             }
             else {
-                sessionCode = FormatUtils.getSessionId(siteId.substring(siteId.indexOf('.')+1));
+                sessionCode = FormatUtils.getSessionId(siteId.substring(siteId.lastIndexOf('.')+1));
             }
             description = getOfficialDescriptionString(catalogNbr, sessionCode, locale);
         }
