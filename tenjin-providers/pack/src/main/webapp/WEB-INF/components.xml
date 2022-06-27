@@ -23,4 +23,9 @@
 		<property name="memoryService" ref="org.sakaiproject.memory.api.MemoryService"/>
 	</bean>
 
+	<bean id="LearningMaterialProvider"
+		  class="ca.hec.providers.tenjin.LearningMaterialProvider" init-method="init">
+		<property name="memoryService" ref="org.sakaiproject.memory.api.MemoryService"/>
+	</bean>
+
 </beans>
