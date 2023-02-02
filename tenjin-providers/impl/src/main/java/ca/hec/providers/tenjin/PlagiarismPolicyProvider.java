@@ -77,6 +77,12 @@ public class PlagiarismPolicyProvider implements ExternalDataProvider {
 		return rubric;
 	}
 
+	@Override
+	// should only be true if provided element is not refreshed on copy (this one is)
+	public boolean copyElementOnSiteCopy(String destinationSiteId) {
+		return false;
+	}
+
 	private ResourceBundle getBundle(String path) {
 		ResourceBundle rb = null;
 
