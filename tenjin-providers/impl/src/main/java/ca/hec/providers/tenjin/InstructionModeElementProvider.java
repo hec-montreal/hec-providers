@@ -3,11 +3,19 @@ package ca.hec.providers.tenjin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.PropertyResourceBundle;
-import java.util.ResourceBundle;
+
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.FileBasedConfiguration;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.builder.BasicConfigurationBuilder;
+import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.io.FileHandler;
+
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -36,7 +44,7 @@ import lombok.Setter;
 public class InstructionModeElementProvider implements ExternalDataProvider {
 	private static Logger log = LoggerFactory.getLogger(LearningMaterialProvider.class);
 
-	private static final String CONFIGURATION_FILE = "/group/tenjin/learningMaterialProvider/learningMaterialText.properties";
+	private static final String CONFIGURATION_FILE = "/group/tenjin/instructionModeProvider/instructionModeText.properties";
 
 	//private static String CACHE_NAME = "ca.hec.commons.providers.LearningMaterialProvider";
 	//private Cache<String, ResourceBundle> cache;
@@ -54,72 +62,68 @@ public class InstructionModeElementProvider implements ExternalDataProvider {
 		if (locale != null) {
 			bundlePath = bundlePath.replace(".properties", "_" + locale + ".properties");
 		}
-		ResourceBundle bundle = getBundle(bundlePath);
+		Configuration bundle = getBundle(bundlePath);
 
-		SyllabusCompositeElement instructionModePage = new SyllabusCompositeElement();
-		instructionModePage.setTitle("InstructionMode");
-		instructionModePage.setTemplateStructureId(1551L);
-
-		SyllabusRubricElement descriptionRubric = new SyllabusRubricElement();
-		List<AbstractSyllabusElement> children = new ArrayList<AbstractSyllabusElement>();
-		descriptionRubric.setTitle("Description");
-		descriptionRubric.setElements(children);
-		descriptionRubric.setTemplateStructureId(-1L);
-
-		instructionModePage.setElements(Stream.of(descriptionRubric).collect(Collectors.toList()));
-
-		SyllabusTextElement textElement = new SyllabusTextElement();
-		textElement.setDescription("<ul><li>Description de l'organisation du cours</li><li>https://enseigner.hec.ca/aidememoire-etudiant-hybride/</li></ul>");
-//		textElement.setDescription(bundle.getString("learningMaterialText"));
-		textElement.setTitle(null);
-		textElement.setTemplateStructureId(-1L);
-		textElement.setCommon(true);
-		textElement.setPublicElement(true);
-		textElement.setHidden(false);
-		textElement.setImportant(false);
-
-		children.add(textElement);
-
-		/*
+		SyllabusCompositeElement instructionModePage = null;
 		if (bundle != null) {
-			SyllabusTextElement textElement = new SyllabusTextElement();
+			instructionModePage = new SyllabusCompositeElement();
+			//title is set from DB
+			instructionModePage.setTitle(bundle.getString("page.title"));
+			List<AbstractSyllabusElement> instructionModePageElements = new ArrayList<AbstractSyllabusElement>();
+			instructionModePage.setElements(instructionModePageElements);
+			instructionModePage.setCommon(true);
+			instructionModePage.setEqualsPublished(false);
 
-			textElement.setDescription(bundle.getString("learningMaterialText"));
-			textElement.setTitle(bundle.getString("learningMaterialTitle"));
-			textElement.setTemplateStructureId(-1L);
-			textElement.setCommon(true);
-			textElement.setPublicElement(true);
-			textElement.setHidden(false);
-			textElement.setImportant(false);
+			String[] rubricTitles = bundle.getStringArray("rubric.titles");
 
-			rubric.setTitle(bundle.getString("learningMaterialRubricTitle"));
-			children.add(textElement);
+			for (int i = 1; i <= rubricTitles.length; i++) {
+				SyllabusRubricElement rubric = new SyllabusRubricElement();
+				List<AbstractSyllabusElement> children = new ArrayList<AbstractSyllabusElement>();
+				rubric.setElements(children);
+				rubric.setTitle(rubricTitles[i]);
+				rubric.setTemplateStructureId(-1L);
+				rubric.setCommon(true);
+				rubric.setEqualsPublished(false);
+		
+				String[] textElements = bundle.getStringArray("rubric."+i+".text.elements");
+				for (int j = 1; j <= textElements.length; j++) {
+					SyllabusTextElement text = new SyllabusTextElement();
+					text.setDescription(textElements[j]);
+					text.setTemplateStructureId(-1L);
+					text.setCommon(true);
+					text.setEqualsPublished(false);
+					children.add(text);		
+				}
+				instructionModePageElements.add(rubric);
+			}
 		}
 		else {
 			log.error("bundle is null for some reason");
-			rubric.setTitle("IMPORTANT");
+			// todo handle this better? 
+			return null;
 		}
-		*/
+
 		return instructionModePage;
 	}
 
-	private ResourceBundle getBundle(String path) {
-		ResourceBundle rb = null;
+	private Configuration getBundle(String path) {
 
+		PropertiesConfiguration conf = null;
 //		if (cache != null && cache.containsKey(path)) {
 //			rb = cache.get(path);
 //		}
 
-		if (rb == null) {
+		if (conf == null) {
 			try {
 				ContentResource resource = ContentHostingService.getResource(path);
-				rb = new PropertyResourceBundle(resource.streamContent());
-				//cache.put(path, rb);
+				conf =  new BasicConfigurationBuilder<>(PropertiesConfiguration.class).configure(new Parameters().properties()).getConfiguration();
+				FileHandler fh = new FileHandler(conf);
+				fh.load(resource.streamContent());
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}
-		return rb;
+		return conf;
 	}
 
 }
