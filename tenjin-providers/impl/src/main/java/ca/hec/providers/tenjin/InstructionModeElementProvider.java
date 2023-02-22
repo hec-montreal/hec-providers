@@ -3,36 +3,27 @@ package ca.hec.providers.tenjin;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-import java.io.File;
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
-
-import org.apache.commons.configuration2.Configuration;
-import org.apache.commons.configuration2.FileBasedConfiguration;
-import org.apache.commons.configuration2.PropertiesConfiguration;
-import org.apache.commons.configuration2.builder.BasicConfigurationBuilder;
-import org.apache.commons.configuration2.builder.FileBasedConfigurationBuilder;
-import org.apache.commons.configuration2.builder.fluent.Parameters;
-import org.apache.commons.configuration2.io.FileHandler;
-
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
+
+/*
+import org.apache.commons.configuration2.Configuration;
+import org.apache.commons.configuration2.PropertiesConfiguration;
+import org.apache.commons.configuration2.builder.BasicConfigurationBuilder;
+import org.apache.commons.configuration2.builder.fluent.Parameters;
+import org.apache.commons.configuration2.io.FileHandler;
+*/
 
 import ca.hec.tenjin.api.model.syllabus.SyllabusRubricElement;
 import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.content.cover.ContentHostingService;
-import org.sakaiproject.exception.IdUnusedException;
-import org.sakaiproject.exception.PermissionException;
-import org.sakaiproject.exception.ServerOverloadException;
-import org.sakaiproject.exception.TypeException;
-import org.sakaiproject.memory.api.Cache;
 import org.sakaiproject.memory.api.MemoryService;
 
 import ca.hec.tenjin.api.model.syllabus.AbstractSyllabusElement;
 import ca.hec.tenjin.api.model.syllabus.SyllabusCompositeElement;
 import ca.hec.tenjin.api.model.syllabus.SyllabusTextElement;
-import ca.hec.tenjin.api.model.template.Template;
 import ca.hec.tenjin.api.provider.ExternalDataProvider;
 import lombok.Setter;
 
@@ -58,25 +49,26 @@ public class InstructionModeElementProvider implements ExternalDataProvider {
 
 	@Override
 	public AbstractSyllabusElement getAbstractSyllabusElement(String siteId, String locale) {
+		/*
 		String bundlePath = CONFIGURATION_FILE;
 		if (locale != null) {
 			bundlePath = bundlePath.replace(".properties", "_" + locale + ".properties");
 		}
 		Configuration bundle = getBundle(bundlePath);
-
+*/
 		SyllabusCompositeElement instructionModePage = null;
-		if (bundle != null) {
+		if (true /*bundle != null*/) {
 			instructionModePage = new SyllabusCompositeElement();
 			//title is set from DB
-			instructionModePage.setTitle(bundle.getString("page.title"));
+			instructionModePage.setTitle("InstructionModePage" /*bundle.getString("page.title")*/);
 			List<AbstractSyllabusElement> instructionModePageElements = new ArrayList<AbstractSyllabusElement>();
 			instructionModePage.setElements(instructionModePageElements);
 			instructionModePage.setCommon(true);
 			instructionModePage.setEqualsPublished(false);
 
-			String[] rubricTitles = bundle.getStringArray("rubric.titles");
+			String[] rubricTitles = { "Description", "Rubric 2", "test 3" };//bundle.getStringArray("rubric.titles");
 
-			for (int i = 1; i <= rubricTitles.length; i++) {
+			for (int i = 0; i < rubricTitles.length; i++) {
 				SyllabusRubricElement rubric = new SyllabusRubricElement();
 				List<AbstractSyllabusElement> children = new ArrayList<AbstractSyllabusElement>();
 				rubric.setElements(children);
@@ -85,8 +77,9 @@ public class InstructionModeElementProvider implements ExternalDataProvider {
 				rubric.setCommon(true);
 				rubric.setEqualsPublished(false);
 		
-				String[] textElements = bundle.getStringArray("rubric."+i+".text.elements");
-				for (int j = 1; j <= textElements.length; j++) {
+				String[] textElements = { "this is a test (damn commons-config don't work)", "Test a second text element" };
+				//bundle.getStringArray("rubric."+i+".text.elements");
+				for (int j = 0; j < textElements.length; j++) {
 					SyllabusTextElement text = new SyllabusTextElement();
 					text.setDescription(textElements[j]);
 					text.setTemplateStructureId(-1L);
@@ -106,6 +99,12 @@ public class InstructionModeElementProvider implements ExternalDataProvider {
 		return instructionModePage;
 	}
 
+	@Override
+	public boolean copyElementOnSiteCopy(String destinationSiteId) {
+		return true;
+	}
+
+	/*
 	private Configuration getBundle(String path) {
 
 		PropertiesConfiguration conf = null;
@@ -125,5 +124,6 @@ public class InstructionModeElementProvider implements ExternalDataProvider {
 		}
 		return conf;
 	}
+	*/
 
 }
