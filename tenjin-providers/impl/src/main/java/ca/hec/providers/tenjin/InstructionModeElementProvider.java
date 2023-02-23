@@ -66,29 +66,56 @@ public class InstructionModeElementProvider implements ExternalDataProvider {
 			instructionModePage.setCommon(true);
 			instructionModePage.setEqualsPublished(false);
 
-			String[] rubricTitles = { "Description", "Rubric 2", "test 3" };//bundle.getStringArray("rubric.titles");
-
-			for (int i = 0; i < rubricTitles.length; i++) {
-				SyllabusRubricElement rubric = new SyllabusRubricElement();
-				List<AbstractSyllabusElement> children = new ArrayList<AbstractSyllabusElement>();
-				rubric.setElements(children);
-				rubric.setTitle(rubricTitles[i]);
-				rubric.setTemplateStructureId(-1L);
-				rubric.setCommon(true);
-				rubric.setEqualsPublished(false);
+			SyllabusRubricElement rubric = new SyllabusRubricElement();
+			List<AbstractSyllabusElement> children = new ArrayList<AbstractSyllabusElement>();
+			rubric.setElements(children);
+			rubric.setTitle("Description");
+			rubric.setTemplateStructureId(1552L);
+			rubric.setCommon(true);
+			rubric.setEqualsPublished(false);
 		
-				String[] textElements = { "this is a test (damn commons-config don't work)", "Test a second text element" };
-				//bundle.getStringArray("rubric."+i+".text.elements");
-				for (int j = 0; j < textElements.length; j++) {
-					SyllabusTextElement text = new SyllabusTextElement();
-					text.setDescription(textElements[j]);
-					text.setTemplateStructureId(-1L);
-					text.setCommon(true);
-					text.setEqualsPublished(false);
-					children.add(text);		
-				}
-				instructionModePageElements.add(rubric);
-			}
+			SyllabusTextElement text = new SyllabusTextElement();
+			text.setDescription("this is a test (damn commons-config don't work)");
+			text.setTemplateStructureId(1553L);
+			text.setCommon(true);
+			text.setEqualsPublished(false);
+			children.add(text);
+
+			/*
+			SyllabusRubricElement rubric2 = new SyllabusRubricElement();
+			List<AbstractSyllabusElement> children2 = new ArrayList<AbstractSyllabusElement>();
+			rubric2.setElements(children2);
+			rubric2.setTitle("Description");
+			rubric2.setTemplateStructureId(1560L);
+			rubric2.setCommon(true);
+			rubric2.setEqualsPublished(false);
+		
+			SyllabusTextElement text2 = new SyllabusTextElement();
+			text2.setDescription("this is a test (damn commons-config don't work)");
+			text2.setTemplateStructureId(1562L);
+			text2.setCommon(true);
+			text2.setEqualsPublished(false);
+			children2.add(text2);
+
+			
+			SyllabusRubricElement rubric3 = new SyllabusRubricElement();
+			List<AbstractSyllabusElement> children3 = new ArrayList<AbstractSyllabusElement>();
+			rubric3.setElements(children3);
+			rubric3.setTitle("Description");
+			rubric3.setTemplateStructureId(1561L);
+			rubric3.setCommon(true);
+			rubric3.setEqualsPublished(false);
+
+			SyllabusTextElement text3 = new SyllabusTextElement();
+			text3.setDescription("this is a test (damn commons-config don't work)");
+			text3.setTemplateStructureId(1569L);
+			text3.setCommon(true);
+			text3.setEqualsPublished(false);
+			children3.add(text3);
+*/
+			instructionModePageElements.add(rubric);
+//			instructionModePageElements.add(rubric2);
+//			instructionModePageElements.add(rubric3);
 		}
 		else {
 			log.error("bundle is null for some reason");
@@ -101,7 +128,12 @@ public class InstructionModeElementProvider implements ExternalDataProvider {
 
 	@Override
 	public boolean copyElementOnSiteCopy(String destinationSiteId) {
-		return true;
+		if (destinationSiteId.endsWith("HS")) {
+			return true;
+		}
+		else {
+			return false;
+		}
 	}
 
 	/*
