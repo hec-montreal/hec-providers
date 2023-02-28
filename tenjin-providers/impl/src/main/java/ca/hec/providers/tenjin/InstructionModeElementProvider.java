@@ -55,7 +55,7 @@ public class InstructionModeElementProvider implements ExternalDataProvider {
 	@Override
 	public AbstractSyllabusElement getAbstractSyllabusElement(String siteId, String locale) {
 		// element only applies to HS instruction mode
-		if (isCorrectInstructionMode(siteId)) {
+		if (!isCorrectInstructionMode(siteId)) {
 			return null;
 		}
 
