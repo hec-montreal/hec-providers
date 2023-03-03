@@ -119,11 +119,6 @@ public class InstructionModeElementProvider implements ExternalDataProvider {
 				instructionModePageElements.add(rubric);
 			}
 		}
-		else {
-			log.error("bundle is null for some reason");
-			// todo handle this better? 
-			return null;
-		}
 
 		return instructionModePage;
 	}
