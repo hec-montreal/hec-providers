@@ -11,7 +11,7 @@ import java.util.PropertyResourceBundle;
 import ca.hec.tenjin.api.model.syllabus.SyllabusRubricElement;
 import org.sakaiproject.content.api.ContentResource;
 import org.sakaiproject.content.cover.ContentHostingService;
-import org.sakaiproject.memory.api.MemoryService;
+import org.sakaiproject.exception.IdUnusedException;
 import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.cover.SiteService;
 
@@ -19,7 +19,6 @@ import ca.hec.tenjin.api.model.syllabus.AbstractSyllabusElement;
 import ca.hec.tenjin.api.model.syllabus.SyllabusCompositeElement;
 import ca.hec.tenjin.api.model.syllabus.SyllabusTextElement;
 import ca.hec.tenjin.api.provider.ExternalDataProvider;
-import lombok.Setter;
 
 /**
  *
@@ -29,41 +28,48 @@ import lombok.Setter;
 public class InstructionModeElementProvider implements ExternalDataProvider {
 	private static Logger log = LoggerFactory.getLogger(LearningMaterialProvider.class);
 
-	private static final String CONFIGURATION_FILE = "/group/tenjin/instructionModeProvider/instructionModeText.properties";
+	private static final String CONFIGURATION_PATH = "/group/tenjin/instructionModeProvider/";
+	private static final String CONFIGURATION_FILE = "instructionModeText.properties";
 
 	//private static String CACHE_NAME = "ca.hec.commons.providers.LearningMaterialProvider";
 	//private Cache<String, ResourceBundle> cache;
 
-	@Setter
-	private MemoryService memoryService;
+	//@Setter
+	//private MemoryService memoryService;
 
 	public void init() {
 		//cache = null; //memoryService.newCache(CACHE_NAME);
 	}
 
-	private boolean isCorrectInstructionMode(String siteId) {
+	private String getBundlePath(String siteId, String locale) {
+		String instMode = getInstructionMode(siteId);
+		String bundlePath = CONFIGURATION_PATH + ((instMode==null)?"":instMode+"_") + CONFIGURATION_FILE;
+		if (locale != null) {
+			bundlePath = bundlePath.replace(".properties", "_" + locale + ".properties");
+		}
+		return bundlePath;
+	}
+
+	private String getInstructionMode(String siteId) {
 		try {
 			Site site = SiteService.getSite(siteId);
 			String instructionMode = site.getProperties().getProperty("instruction_mode");
-			return instructionMode != null && instructionMode.equals("HS");
+			if (instructionMode != null) {
+				return  instructionMode;
+			}
 		}
 		catch (Exception e) { 
-			return false;
 		}
+		return "";
 	}
 
 	@Override
 	public AbstractSyllabusElement getAbstractSyllabusElement(String siteId, String locale) {
-		// element only applies to HS instruction mode
-		if (!isCorrectInstructionMode(siteId)) {
+		ResourceBundle bundle = getBundle(getBundlePath(siteId, locale));
+		// if resource bundle doesn't exist, don't create the element at all
+		if (bundle == null) {
 			return null;
 		}
-
-		String bundlePath = CONFIGURATION_FILE;
-		if (locale != null) {
-			bundlePath = bundlePath.replace(".properties", "_" + locale + ".properties");
-		}
-		ResourceBundle bundle = getBundle(bundlePath);
 
 		SyllabusCompositeElement instructionModePage = null;
 		if (bundle != null) {
@@ -124,7 +130,8 @@ public class InstructionModeElementProvider implements ExternalDataProvider {
 
 	@Override
 	public boolean copyElementOnSiteCopy(String destinationSiteId) {
-		return isCorrectInstructionMode(destinationSiteId);
+		// use existance of bundle to determine if element should be copied.
+		return getBundle(getBundlePath(destinationSiteId, null)) != null;
 	}
 
 	private ResourceBundle getBundle(String path) {
@@ -140,6 +147,9 @@ public class InstructionModeElementProvider implements ExternalDataProvider {
 				ContentResource resource = ContentHostingService.getResource(path);
 				rb = new PropertyResourceBundle(resource.streamContent());
 				//cache.put(path, rb);
+			} catch (IdUnusedException e) {
+				// properties file doesn't exist
+				return null;
 			} catch (Exception e) {
 				e.printStackTrace();
 			}
