@@ -123,12 +123,6 @@ public class InstructionModeElementProvider implements ExternalDataProvider {
 		return instructionModePage;
 	}
 
-	@Override
-	public boolean copyElementOnSiteCopy(String destinationSiteId) {
-		// use existance of bundle to determine if element should be copied.
-		return getBundle(getBundlePath(destinationSiteId, null)) != null;
-	}
-
 	private ResourceBundle getBundle(String path) {
 		ResourceBundle rb = null;
 

@@ -59,12 +59,6 @@ public class OfficialCourseDescriptionProvider implements ExternalDataProvider {
         return descriptionRubric;
     }
 
-	@Override
-	// should only be true if provided element is not refreshed on copy (this one is)
-	public boolean copyElementOnSiteCopy(String destinationSiteId) {
-		return false;
-	}
-
     private String getOfficialDescriptionString(String catalogNbr, String sessionCode, String locale) {
         log.debug("Retrieve course description for " + catalogNbr + " " + sessionCode + " " + locale);
         String officialDescription = "";
