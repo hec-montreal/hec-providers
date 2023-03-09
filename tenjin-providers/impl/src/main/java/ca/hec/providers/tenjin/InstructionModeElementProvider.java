@@ -16,7 +16,6 @@ import org.sakaiproject.site.api.Site;
 import org.sakaiproject.site.cover.SiteService;
 
 import ca.hec.tenjin.api.model.syllabus.AbstractSyllabusElement;
-import ca.hec.tenjin.api.model.syllabus.SyllabusCompositeElement;
 import ca.hec.tenjin.api.model.syllabus.SyllabusTextElement;
 import ca.hec.tenjin.api.provider.ExternalDataProvider;
 
@@ -71,56 +70,29 @@ public class InstructionModeElementProvider implements ExternalDataProvider {
 			return null;
 		}
 
-		SyllabusCompositeElement instructionModePage = null;
-		if (bundle != null) {
-			instructionModePage = new SyllabusCompositeElement();
-			//title is set from DB
-			instructionModePage.setTitle(bundle.getString("page.title"));
-			List<AbstractSyllabusElement> instructionModePageElements = new ArrayList<AbstractSyllabusElement>();
-			instructionModePage.setElements(instructionModePageElements);
-			instructionModePage.setCommon(true);
-			instructionModePage.setEqualsPublished(false);
+		// hardcoded based on template
+		Long rubricTemplateStructureId = 1552L;
+		Long textElementTemplateStructureId = 1553L;
 
-			String rubricCountStr = bundle.getString("rubric.count");
-			Integer rubricCount = Integer.decode(rubricCountStr);
+		String rubricTitle = bundle.getString("rubric.title");
+		String textElementDescription = bundle.getString("text.description");
 
-			for (int i = 1; i <= rubricCount; i++) {
-				String rubricTSIStr = bundle.getString("rubric." + i + ".template.structure.id");
-				String textElementTSIStr = bundle.getString("text." + i + ".template.structure.id");
-				Long rubricTemplateStructureId = null;
-				Long textElementTemplateStructureId = null;
-				try {
-					rubricTemplateStructureId = Long.decode(rubricTSIStr);
-					textElementTemplateStructureId = Long.decode(textElementTSIStr);
-				}
-				catch (NumberFormatException e) {
-					log.error("Unable to parse template structure id");
-					continue;
-				}
+		SyllabusRubricElement rubric = new SyllabusRubricElement();
+		List<AbstractSyllabusElement> children = new ArrayList<AbstractSyllabusElement>();
+		rubric.setElements(children);
+		rubric.setTitle(rubricTitle);
+		rubric.setTemplateStructureId(rubricTemplateStructureId);
+		rubric.setCommon(true);
+		rubric.setEqualsPublished(false);
 
-				String rubricTitle = bundle.getString("rubric." + i + ".title");
-				String textElementDescription = bundle.getString("text." + i + ".description");
+		SyllabusTextElement text = new SyllabusTextElement();
+		text.setDescription(textElementDescription);
+		text.setTemplateStructureId(textElementTemplateStructureId);
+		text.setCommon(true);
+		text.setEqualsPublished(false);
+		children.add(text);
 
-				SyllabusRubricElement rubric = new SyllabusRubricElement();
-				List<AbstractSyllabusElement> children = new ArrayList<AbstractSyllabusElement>();
-				rubric.setElements(children);
-				rubric.setTitle(rubricTitle);
-				rubric.setTemplateStructureId(rubricTemplateStructureId);
-				rubric.setCommon(true);
-				rubric.setEqualsPublished(false);
-
-				SyllabusTextElement text = new SyllabusTextElement();
-				text.setDescription(textElementDescription);
-				text.setTemplateStructureId(textElementTemplateStructureId);
-				text.setCommon(true);
-				text.setEqualsPublished(false);
-				children.add(text);
-
-				instructionModePageElements.add(rubric);
-			}
-		}
-
-		return instructionModePage;
+		return rubric;
 	}
 
 	private ResourceBundle getBundle(String path) {
