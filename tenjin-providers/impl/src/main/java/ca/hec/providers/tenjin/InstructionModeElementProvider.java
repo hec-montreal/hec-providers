@@ -70,10 +70,6 @@ public class InstructionModeElementProvider implements ExternalDataProvider {
 			return null;
 		}
 
-		// hardcoded based on template
-		Long rubricTemplateStructureId = 1552L;
-		Long textElementTemplateStructureId = 1553L;
-
 		String rubricTitle = bundle.getString("rubric.title");
 		String textElementDescription = bundle.getString("text.description");
 
@@ -81,13 +77,12 @@ public class InstructionModeElementProvider implements ExternalDataProvider {
 		List<AbstractSyllabusElement> children = new ArrayList<AbstractSyllabusElement>();
 		rubric.setElements(children);
 		rubric.setTitle(rubricTitle);
-		rubric.setTemplateStructureId(rubricTemplateStructureId);
 		rubric.setCommon(true);
 		rubric.setEqualsPublished(false);
 
 		SyllabusTextElement text = new SyllabusTextElement();
 		text.setDescription(textElementDescription);
-		text.setTemplateStructureId(textElementTemplateStructureId);
+		text.setTemplateStructureId(-1L);
 		text.setCommon(true);
 		text.setEqualsPublished(false);
 		children.add(text);
