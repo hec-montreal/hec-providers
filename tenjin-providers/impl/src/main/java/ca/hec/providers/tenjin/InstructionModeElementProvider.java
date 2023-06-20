@@ -59,19 +59,20 @@ public class InstructionModeElementProvider implements ExternalDataProvider {
 		}
 		catch (Exception e) { 
 		}
-		return "";
+		return null;
 	}
 
 	@Override
 	public AbstractSyllabusElement getAbstractSyllabusElement(String siteId, String locale) {
 		ResourceBundle bundle = getBundle(getBundlePath(siteId, locale));
-		// if resource bundle doesn't exist, don't create the element at all
-		if (bundle == null) {
-			return null;
-		}
+		String rubricTitle = "";
+		String textElementDescription = "";
 
-		String rubricTitle = bundle.getString("rubric.title");
-		String textElementDescription = bundle.getString("text.description");
+		// if resource bundle doesn't exist, create an empty rubric we can refresh later
+		if (bundle != null) {
+			rubricTitle = bundle.getString("rubric.title");
+			textElementDescription = bundle.getString("text.description");
+		}
 
 		SyllabusRubricElement rubric = new SyllabusRubricElement();
 		List<AbstractSyllabusElement> children = new ArrayList<AbstractSyllabusElement>();
